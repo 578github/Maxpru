@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quizz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-weight: bold;
+        }
+        .answer {
+            margin: 5px 0;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="quiz-container">
+        <h1>Simple Quizz</h1>
+        <div id="quiz">
+            <!-- Questions will be loaded here -->
+        </div>
+        <button id="submit">Submit Quizz</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is the capital of France?",
+                a: "Berlin",
+                b: "Madrid",
+                c: "Paris",
+                d: "Rome",
+                correct: "c"
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                a: "Earth",
+                b: "Mars",
+                c: "Jupiter",
+                d: "Saturn",
+                correct: "b"
+            },
+            {
+                question: "Who wrote 'Hamlet'?",
+                a: "Charles Dickens",
+                b: "Mark Twain",
+                c: "William Shakespeare",
+                d: "J.K. Rowling",
+                correct: "c"
+            },
+            {
+                question: "Who is director of RRR movie?",
+                a: "sandeep reddy vanga",
+                b: "Sukumar",
+                c: "Vivek Atreya",
+                d: "S.S Rajamouli",
+                correct: "d"
+            }
+        ];
+
+        const quiz = document.getElementById('quiz');
+        const submitBtn = document.getElementById('submit');
+        let currentQuiz = 0;
+        let score = 0;
+
+        // Function to load quiz questions
+        function loadQuiz() {
+            const currentQuizData = quizData[currentQuiz];
+            
+            quiz.innerHTML = `
+                <div class="question">${currentQuizData.question}</div>
+                <div class="answer">
+                    <input type="radio" name="answer" value="a"> ${currentQuizData.a}
+                </div>
+                <div class="answer">
+                    <input type="radio" name="answer" value="b"> ${currentQuizData.b}
+                </div>
+                <div class="answer">
+                    <input type="radio" name="answer" value="c"> ${currentQuizData.c}
+                </div>
+                <div class="answer">
+                    <input type="radio" name="answer" value="d"> ${currentQuizData.d}
+                </div>
+            `;
+        }
+
+        loadQuiz();
+
+        // Event listener for the submit button
+        submitBtn.addEventListener('click', () => {
+            const answers = document.querySelectorAll('input[name="answer"]');
+            let selectedAnswer;
+
+            // Find the selected answer
+            answers.forEach(answer => {
+                if (answer.checked) {
+                    selectedAnswer = answer.value;
+                }
+            });
+
+            // Check if the answer is correct
+            if (selectedAnswer === quizData[currentQuiz].correct) {
+                score++;
+            }
+
+            // Load the next question or show the result
+            currentQuiz++;
+            if (currentQuiz < quizData.length) {
+                loadQuiz();
+            } else {
+                quiz.innerHTML = `<h2>You answered ${score}/${quizData.length} questions correctly.</h2>`;
+            }
+        });
+    </script>
+</body>
+</html>
+
